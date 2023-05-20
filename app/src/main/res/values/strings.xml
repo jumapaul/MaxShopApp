@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MaxShop</string>
+    <string name="first_onBoard">Choose your product</string>
+    <string name="second_onBoard">Make Payment</string>
+    <string name="third_onBoard">Get your order on time</string>
+    <string name="first_onBoard_statement">Choose and search the product\n you like from various grands.Explore\n the grands you like and make the order</string>
+    <string name="second_onBoard_statement">Make online payment using \n the banking method or any other payment\n method you can. Cash on delivery is also available</string>
+    <string name="third_onBoard_statement">We provide the fast delivery as\n possible. Get your orders delivered\n on time and get it delivered safe</string>
 </resources>
