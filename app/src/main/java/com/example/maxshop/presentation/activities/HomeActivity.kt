@@ -1,4 +1,4 @@
-package com.example.maxshop
+package com.example.maxshop.presentation.activities
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,20 +7,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.maxshop.presentation.OnBoard.MainFunction
+import com.example.maxshop.presentation.HomeScreen
 import com.example.maxshop.theme.MaxShopTheme
 
-class MainActivity : ComponentActivity() {
+class HomeActivity: ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             MaxShopTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainFunction()
-                    //NavGraph()
+                    HomeScreen()
+
                 }
             }
         }

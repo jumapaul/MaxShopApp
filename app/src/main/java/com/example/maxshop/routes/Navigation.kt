@@ -1,39 +1,28 @@
 package com.example.maxshop.routes
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.maxshop.presentation.HomeScreen
-import com.example.maxshop.presentation.OnBoard.MainFunction
+import com.example.maxshop.presentation.onboard.viewpage.OnBoardScreens
 
 @Composable
-fun NavGraph() {
-
-    val navController = rememberNavController()
+fun NavGraph(
+    navController: NavHostController
+) {
     NavHost(
         navController = navController,
         startDestination = Screens.OnBoardingPage.route,
     ) {
 
-        composable(route = Screens.FirstScreen.route){
-
+        composable(route = Screens.OnBoardingPage.route) {
+            OnBoardScreens(navController)
         }
         composable(
             route = Screens.HomeScreen.route
         ) {
-            HomeScreen(navController = navController)
+            HomeScreen()
         }
-
-//        composable(route = Screens.HomeScreen.route){
-//            HomeScreen(navController = navController)
-//        }
-
-
-//        composable(
-//            route = Screens.OnBoardingPage.route
-//        ){
-//           // MainFunction(navController)
-//        }
     }
 }

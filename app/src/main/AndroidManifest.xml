@@ -12,8 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaxShop"
         tools:targetApi="31">
+        <activity android:name=".presentation.activities.HomeActivity">
+
+        </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.activities.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.MaxShop">
@@ -23,6 +26,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
     </application>
 
 </manifest>

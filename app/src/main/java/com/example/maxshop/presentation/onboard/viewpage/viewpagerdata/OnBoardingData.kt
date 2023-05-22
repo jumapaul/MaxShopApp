@@ -1,4 +1,4 @@
-package com.example.maxshop.presentation.OnBoard.viewpage.viewpagerdata
+package com.example.maxshop.presentation.onboard.viewpage.viewpagerdata
 
 data class OnBoardingData(
     val image: Int,

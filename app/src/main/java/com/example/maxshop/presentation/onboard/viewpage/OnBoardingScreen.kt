@@ -1,13 +1,15 @@
-package com.example.maxshop.presentation.OnBoard.viewpage
+package com.example.maxshop.presentation.onboard.viewpage
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -29,22 +32,73 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.maxshop.R
-import com.example.maxshop.presentation.OnBoard.viewpage.viewpagerdata.OnBoardingData
+import com.example.maxshop.presentation.onboard.viewpage.viewpagerdata.OnBoardingData
 import com.example.maxshop.routes.Screens
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun OnBoardScreens(
+    navController: NavHostController
+) {
+    val onBoardingScreenItem = ArrayList<OnBoardingData>()
+    onBoardingScreenItem.add(
+        OnBoardingData(
+            R.drawable.onboard_1,
+            R.string.first_onBoard,
+            R.string.first_onBoard_statement
+        )
+    )
+
+    onBoardingScreenItem.add(
+        OnBoardingData(
+            R.drawable.onboard_2,
+            R.string.second_onBoard,
+            R.string.first_onBoard_statement
+        )
+    )
+
+    onBoardingScreenItem.add(
+        OnBoardingData(
+            R.drawable.onboard_3,
+            R.string.third_onBoard,
+            R.string.first_onBoard_statement
+        )
+    )
+
+    val pagerState = rememberPagerState(
+        pageCount = onBoardingScreenItem.size, initialOffscreenLimit = 2,
+        infiniteLoop = false, initialPage = 0
+    )
+
+    OnBoardingPager(
+        item = onBoardingScreenItem, pagerState = pagerState,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = colorResource(id = R.color.lemon_chiffon)),
+        navController
+        // onGetStartedClicked = { onGetStartedClicked() }
+    )
+}
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun OnBoardingPager(
     item: List<OnBoardingData>,
     pagerState: PagerState,
     modifier: Modifier = Modifier,
-//    navController: NavController
+    navController: NavHostController
+    //onGetStartedClicked: () -> Unit
 ) {
-    Box(modifier = modifier) {
+    Box(modifier = modifier.fillMaxSize()) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             HorizontalPager(state = pagerState) { page ->
                 Column(
@@ -92,7 +146,10 @@ fun OnBoardingPager(
 
         Box(modifier = Modifier.align(Alignment.BottomCenter)) {
             BottomSection(
-                currentPager = pagerState.currentPage, //navController = navController
+                currentPager = pagerState.currentPage,
+                pagerState,
+                navController
+                // onGetStartedClicked
             )
         }
     }
@@ -129,10 +186,14 @@ fun Indicator(isSelected: Boolean) {
     )
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
-fun BottomSection(currentPager: Int,
-                 // navController: NavController
+fun BottomSection(
+    currentPager: Int, pagerState: PagerState,
+    navController: NavController
+    // onGetStartedClicked: () -> Unit
 ) {
+
     Row(
         modifier = Modifier
             .padding(bottom = 20.dp)
@@ -143,7 +204,11 @@ fun BottomSection(currentPager: Int,
         if (currentPager == 2) {
             OutlinedButton(
                 onClick = {
-                    //navController.navigate(Screens.HomeScreen.route)
+                    navController.navigate(Screens.HomeScreen.route)
+
+//                    onGetStartedClicked
+//                    val intent = Intent(context, HomeActivity::class.java)
+//                    context.startActivity(intent)
                 },
                 shape = RoundedCornerShape(50)
             ) {
@@ -153,10 +218,29 @@ fun BottomSection(currentPager: Int,
                 )
             }
         } else if (currentPager == 0) {
-            SkipNextButton(text = "Next", modifier = Modifier.padding(end = 20.dp))
+            SkipNextButton(text = "", modifier = Modifier.padding(start = 20.dp))
+            SkipNextButton(text = "Next", modifier = Modifier
+                .padding(end = 20.dp)
+                .clickable {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        pagerState.scrollToPage(pagerState.currentPage + 1)
+                    }
+                })
         } else {
-            SkipNextButton(text = "Back", modifier = Modifier.padding(start = 20.dp))
-            SkipNextButton(text = "Next", modifier = Modifier.padding(end = 20.dp))
+            SkipNextButton(text = "Back", modifier = Modifier
+                .padding(start = 20.dp)
+                .clickable {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        pagerState.scrollToPage(pagerState.currentPage - 1)
+                    }
+                })
+            SkipNextButton(text = "Next", modifier = Modifier
+                .padding(end = 20.dp)
+                .clickable {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        pagerState.scrollToPage(pagerState.currentPage + 1)
+                    }
+                })
         }
     }
 }
@@ -169,3 +253,4 @@ fun SkipNextButton(text: String, modifier: Modifier) {
         modifier = modifier
     )
 }
+
