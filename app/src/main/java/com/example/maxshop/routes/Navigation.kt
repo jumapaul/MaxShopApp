@@ -10,11 +10,10 @@ import com.example.maxshop.presentation.onboard.viewpage.OnBoardScreens
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    startDestination: String
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination,
+        startDestination = Screens.OnBoardingPage.route,
     ) {
 
         composable(route = Screens.OnBoardingPage.route) {

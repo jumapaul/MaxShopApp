@@ -1,5 +1,9 @@
 package com.example.maxshop.presentation.onboard.viewpage
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
+import android.view.Display.Mode
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,10 +23,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -51,8 +57,19 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnBoardScreens(
     navController: NavHostController,
-    onBoardViewModel: OnBoardViewModel = hiltViewModel()
 ) {
+
+    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(LocalContext.current)
+    val onBoardingShown = sharedPreferences.getBoolean("on_boarding_complete", false)
+
+    LaunchedEffect(Unit){
+        if (onBoardingShown){
+            navController.navigate(Screens.HomeScreen.route){
+                popUpTo(navController.graph.startDestinationId)
+                launchSingleTop
+            }
+        }
+    }
     val onBoardingScreenItem = ArrayList<OnBoardingData>()
     onBoardingScreenItem.add(
         OnBoardingData(
@@ -89,10 +106,10 @@ fun OnBoardScreens(
             .fillMaxWidth()
             .background(color = colorResource(id = R.color.lemon_chiffon)),
         navController,
-        onBoardViewModel
 
-    )
+        )
 }
+
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun OnBoardingPager(
@@ -100,9 +117,8 @@ fun OnBoardingPager(
     pagerState: PagerState,
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    onBoardViewModel: OnBoardViewModel
 
-) {
+    ) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             HorizontalPager(state = pagerState) { page ->
@@ -154,8 +170,7 @@ fun OnBoardingPager(
                 currentPager = pagerState.currentPage,
                 pagerState,
                 navController,
-                onBoardViewModel
-
+                LocalContext.current
             )
         }
     }
@@ -197,7 +212,7 @@ fun Indicator(isSelected: Boolean) {
 fun BottomSection(
     currentPager: Int, pagerState: PagerState,
     navController: NavController,
-    onBoardViewModel: OnBoardViewModel
+    context: Context
 ) {
 
     Row(
@@ -210,11 +225,12 @@ fun BottomSection(
         if (currentPager == 2) {
             OutlinedButton(
                 onClick = {
-                    onBoardViewModel.saveOnBoardingState(completed = true)
-                    navController.popBackStack()
+                    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+                    val editor = sharedPreferences.edit()
+                    editor.putBoolean("on_boarding_complete", true)
+                    editor.apply()
                     navController.navigate(Screens.HomeScreen.route)
 
-//
                 },
                 shape = RoundedCornerShape(50)
             ) {
