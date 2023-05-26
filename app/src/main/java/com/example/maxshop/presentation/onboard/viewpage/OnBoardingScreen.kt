@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.maxshop.R
@@ -40,6 +41,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,7 +50,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun OnBoardScreens(
-    navController: NavHostController
+    navController: NavHostController,
+    onBoardViewModel: OnBoardViewModel = hiltViewModel()
 ) {
     val onBoardingScreenItem = ArrayList<OnBoardingData>()
     onBoardingScreenItem.add(
@@ -85,8 +88,9 @@ fun OnBoardScreens(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = colorResource(id = R.color.lemon_chiffon)),
-        navController
-        // onGetStartedClicked = { onGetStartedClicked() }
+        navController,
+        onBoardViewModel
+
     )
 }
 @OptIn(ExperimentalPagerApi::class)
@@ -95,8 +99,9 @@ fun OnBoardingPager(
     item: List<OnBoardingData>,
     pagerState: PagerState,
     modifier: Modifier = Modifier,
-    navController: NavHostController
-    //onGetStartedClicked: () -> Unit
+    navController: NavHostController,
+    onBoardViewModel: OnBoardViewModel
+
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -148,8 +153,9 @@ fun OnBoardingPager(
             BottomSection(
                 currentPager = pagerState.currentPage,
                 pagerState,
-                navController
-                // onGetStartedClicked
+                navController,
+                onBoardViewModel
+
             )
         }
     }
@@ -190,8 +196,8 @@ fun Indicator(isSelected: Boolean) {
 @Composable
 fun BottomSection(
     currentPager: Int, pagerState: PagerState,
-    navController: NavController
-    // onGetStartedClicked: () -> Unit
+    navController: NavController,
+    onBoardViewModel: OnBoardViewModel
 ) {
 
     Row(
@@ -204,11 +210,11 @@ fun BottomSection(
         if (currentPager == 2) {
             OutlinedButton(
                 onClick = {
+                    onBoardViewModel.saveOnBoardingState(completed = true)
+                    navController.popBackStack()
                     navController.navigate(Screens.HomeScreen.route)
 
-//                    onGetStartedClicked
-//                    val intent = Intent(context, HomeActivity::class.java)
-//                    context.startActivity(intent)
+//
                 },
                 shape = RoundedCornerShape(50)
             ) {
