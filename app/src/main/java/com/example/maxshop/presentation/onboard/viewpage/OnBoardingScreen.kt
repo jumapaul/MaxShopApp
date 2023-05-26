@@ -58,18 +58,6 @@ import kotlinx.coroutines.launch
 fun OnBoardScreens(
     navController: NavHostController,
 ) {
-
-    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(LocalContext.current)
-    val onBoardingShown = sharedPreferences.getBoolean("on_boarding_complete", false)
-
-    LaunchedEffect(Unit){
-        if (onBoardingShown){
-            navController.navigate(Screens.HomeScreen.route){
-                popUpTo(navController.graph.startDestinationId)
-                launchSingleTop
-            }
-        }
-    }
     val onBoardingScreenItem = ArrayList<OnBoardingData>()
     onBoardingScreenItem.add(
         OnBoardingData(
