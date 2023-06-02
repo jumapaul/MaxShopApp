@@ -8,14 +8,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.maxshop.presentation.screens.main_screen.MainScreen
 import com.example.maxshop.routes.NavGraph
 import com.example.maxshop.routes.Screens
 import com.example.maxshop.theme.MaxShopTheme
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -23,7 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val onBoardingShown = sharedPreferences.getBoolean("on_boarding_complete", false)
+        val onBoardingShown = sharedPreferences.getBoolean("on_boarding_complete", true)
         setContent {
             MaxShopTheme {
                 Surface(
@@ -39,7 +37,11 @@ class MainActivity : ComponentActivity() {
                             popUpTo(navController.graph.startDestinationId)
                             launchSingleTop = true
                         }
+                    }else{
+                        Screens.OnBoardingPage.route
                     }
+
+                    MainScreen()
                 }
             }
         }

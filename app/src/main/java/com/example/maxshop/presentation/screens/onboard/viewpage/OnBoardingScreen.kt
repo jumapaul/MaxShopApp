@@ -1,9 +1,7 @@
-package com.example.maxshop.presentation.onboard.viewpage
+package com.example.maxshop.presentation.screens.onboard.viewpage
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import android.view.Display.Mode
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,7 +21,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,17 +34,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.maxshop.R
-import com.example.maxshop.presentation.onboard.viewpage.viewpagerdata.OnBoardingData
+import com.example.maxshop.presentation.screens.onboard.viewpage.viewpagerdata.OnBoardingData
 import com.example.maxshop.routes.Screens
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -85,7 +80,8 @@ fun OnBoardScreens(
 
     val pagerState = rememberPagerState(
         pageCount = onBoardingScreenItem.size, initialOffscreenLimit = 2,
-        infiniteLoop = false, initialPage = 0
+        infiniteLoop = false,
+        initialPage = 0
     )
 
     OnBoardingPager(
@@ -93,9 +89,8 @@ fun OnBoardScreens(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = colorResource(id = R.color.lemon_chiffon)),
-        navController,
-
-        )
+        navController
+    )
 }
 
 @OptIn(ExperimentalPagerApi::class)
@@ -105,8 +100,7 @@ fun OnBoardingPager(
     pagerState: PagerState,
     modifier: Modifier = Modifier,
     navController: NavHostController,
-
-    ) {
+) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             HorizontalPager(state = pagerState) { page ->
@@ -228,8 +222,8 @@ fun BottomSection(
                 )
             }
         } else if (currentPager == 0) {
-            SkipNextButton(text = "", modifier = Modifier.padding(start = 20.dp))
-            SkipNextButton(text = "Next", modifier = Modifier
+            NextButton(text = "", modifier = Modifier.padding(start = 20.dp))
+            NextButton(text = "Next", modifier = Modifier
                 .padding(end = 20.dp)
                 .clickable {
                     CoroutineScope(Dispatchers.Main).launch {
@@ -237,14 +231,14 @@ fun BottomSection(
                     }
                 })
         } else {
-            SkipNextButton(text = "Back", modifier = Modifier
+            NextButton(text = "Back", modifier = Modifier
                 .padding(start = 20.dp)
                 .clickable {
                     CoroutineScope(Dispatchers.Main).launch {
                         pagerState.scrollToPage(pagerState.currentPage - 1)
                     }
                 })
-            SkipNextButton(text = "Next", modifier = Modifier
+            NextButton(text = "Next", modifier = Modifier
                 .padding(end = 20.dp)
                 .clickable {
                     CoroutineScope(Dispatchers.Main).launch {
@@ -256,7 +250,7 @@ fun BottomSection(
 }
 
 @Composable
-fun SkipNextButton(text: String, modifier: Modifier) {
+fun NextButton(text: String, modifier: Modifier) {
     Text(
         text = text,
         fontFamily = FontFamily(Font(R.font.nunito_regular)),

@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.maxshop.presentation.HomeScreen
-import com.example.maxshop.presentation.onboard.viewpage.OnBoardScreens
+import com.example.maxshop.presentation.screens.homescreen.HomeScreen
+import com.example.maxshop.presentation.screens.onboard.viewpage.OnBoardScreens
 
 @Composable
 fun NavGraph(
