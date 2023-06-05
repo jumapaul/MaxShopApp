@@ -38,7 +38,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.maxshop.R
 import com.example.maxshop.presentation.screens.onboard.viewpage.viewpagerdata.OnBoardingData
-import com.example.maxshop.routes.Screens
+import com.example.maxshop.routes.OnBoardingAndHomeScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -211,7 +211,7 @@ fun BottomSection(
                     val editor = sharedPreferences.edit()
                     editor.putBoolean("on_boarding_complete", true)
                     editor.apply()
-                    navController.navigate(Screens.HomeScreen.route)
+                    navController.navigate(OnBoardingAndHomeScreen.HomeScreen.route)
 
                 },
                 shape = RoundedCornerShape(50)

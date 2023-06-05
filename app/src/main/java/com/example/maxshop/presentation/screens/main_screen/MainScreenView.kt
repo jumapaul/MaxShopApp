@@ -14,7 +14,7 @@ import com.example.maxshop.routes.bottom_navigation.BottomNavigator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreenView() {
     val navController = rememberNavController()
 
     Scaffold(

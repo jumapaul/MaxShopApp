@@ -9,9 +9,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.example.maxshop.presentation.screens.main_screen.MainScreen
-import com.example.maxshop.routes.NavGraph
-import com.example.maxshop.routes.Screens
+import com.example.maxshop.presentation.screens.main_screen.MainScreenView
+import com.example.maxshop.routes.onboarding_navigation.OnBoardHomeNavGraph
+import com.example.maxshop.routes.OnBoardingAndHomeScreen
+import com.example.maxshop.routes.home_navigation.HomeNavGraph
 import com.example.maxshop.theme.MaxShopTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,18 +31,18 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
 
-                    NavGraph(navController = navController)
+                    OnBoardHomeNavGraph(navController = navController)
 
                     if (onBoardingShown){
-                        navController.navigate(Screens.HomeScreen.route){
+                        navController.navigate(OnBoardingAndHomeScreen.HomeScreen.route){
                             popUpTo(navController.graph.startDestinationId)
                             launchSingleTop = true
                         }
                     }else{
-                        Screens.OnBoardingPage.route
+                        OnBoardingAndHomeScreen.OnBoardingPage.route
                     }
 
-                    MainScreen()
+                    MainScreenView()
                 }
             }
         }

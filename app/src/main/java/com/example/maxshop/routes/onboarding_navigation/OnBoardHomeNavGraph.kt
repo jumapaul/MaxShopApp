@@ -1,4 +1,4 @@
-package com.example.maxshop.routes
+package com.example.maxshop.routes.onboarding_navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -6,21 +6,22 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.maxshop.presentation.screens.homescreen.HomeScreen
 import com.example.maxshop.presentation.screens.onboard.viewpage.OnBoardScreens
+import com.example.maxshop.routes.OnBoardingAndHomeScreen
 
 @Composable
-fun NavGraph(
+fun OnBoardHomeNavGraph(
     navController: NavHostController,
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screens.OnBoardingPage.route,
+        startDestination = OnBoardingAndHomeScreen.OnBoardingPage.route,
     ) {
 
-        composable(route = Screens.OnBoardingPage.route) {
+        composable(route = OnBoardingAndHomeScreen.OnBoardingPage.route) {
             OnBoardScreens(navController)
         }
         composable(
-            route = Screens.HomeScreen.route
+            route = OnBoardingAndHomeScreen.HomeScreen.route
         ) {
             HomeScreen()
         }
